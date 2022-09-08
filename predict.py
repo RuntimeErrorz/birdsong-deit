@@ -267,11 +267,7 @@ def list_files(path):
 
 
 IS_TEST = True
-test_audio = list_files(input_path / 'test_soundscapes')
-if len(test_audio) == 0:
-    test_audio = list_files(input_path / 'train_soundscapes')
-    IS_TEST = False
-
+test_audio = list_files(input_path / 'train_soundscapes')
 print('{} FILES IN TEST SET.'.format(len(test_audio)))
 
 
@@ -529,13 +525,21 @@ thr = 2.7
 incr = -1.1
 LOGITS = compute_logits(config, models)
 datas = compute_pred(LOGITS, thr, incr)
-id = -1
-with open("id.txt","r+") as i:
-    id = int(i.readline().strip('\n'))
-    for data in datas:
-        item = {'id': id, 'filename': data[0], 'time': data[1], 'bird_v': data[2]}
-        requests.post(url="http://120.24.50.133:8080/bird",
-                    data=json.dumps(item), headers={"Content-Type": "application/json"})
-        id += 1
-    i.seek(0)
-    i.write(str(id))
+res_json = []
+for data in datas:
+    item = {'filename': data[0], 'time': data[1], 'bird_v': data[2]}
+    res_json.append(item)
+print(res_json)
+with open('res.json', 'w') as res:
+    json.dump(res_json, res)
+
+# id = -1
+# with open("id.txt","r+") as i:
+#     id = int(i.readline().strip('\n'))
+#     for data in datas:
+#         item = {'id': id, 'filename': data[0], 'time': data[1], 'bird_v': data[2]}
+#         requests.post(url="http://120.24.50.133:8080/bird",
+#                     data=json.dumps(item), headers={"Content-Type": "application/json"})
+#         id += 1
+#     i.seek(0)
+#     i.write(str(id))
