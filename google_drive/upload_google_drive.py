@@ -14,7 +14,7 @@ from googleapiclient.http import MediaFileUpload
 SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly']
 
 
-def uploadToGoogleDrive(file_name, file_path, folder_name):
+def upload_google_drive(file_name, file_path, folder_name):
     creds = None
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -47,4 +47,4 @@ def uploadToGoogleDrive(file_name, file_path, folder_name):
     except HttpError as error:
         print(f'An error occurred: {error}')
 
-uploadToGoogleDrive('code.py','files/predict.py','birdclef-2021')
+upload_google_drive('code.py','files/predict.py','birdclef-2021')

@@ -11,8 +11,8 @@ files = os.listdir("train")
 with open("test.csv", mode='w', encoding='utf-8', newline='') as test:
     writer = csv.writer(test, delimiter=',')
     writer.writerow(["common_name", "filename"])
-    testList = random.sample(range(0, len(files)), int(len(files) / 5))
-    for i in testList:
+    test_list = random.sample(range(0, len(files)), int(len(files) / 5))
+    for i in test_list:
         filename = files[i]
         index = train_files.index(filename)
         newline = [train.common_name[index], train.filename[index]]

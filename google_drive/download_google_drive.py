@@ -12,7 +12,7 @@ from googleapiclient.http import *
 
 SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly']
 
-def getService():
+def get_service():
     creds = None
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
@@ -29,7 +29,7 @@ def getService():
     service = build('drive', 'v3', credentials=creds)
     return service
 
-def getIdByName(service, file_name):
+def get_ID_by_name(service, file_name):
     page_token = None
     while True:
         response = service.files().list(q="name contains '{}'".format(file_name),
@@ -39,7 +39,7 @@ def getIdByName(service, file_name):
         for file in response.get('files', []):
             return file.get('id')
 
-def downloadFromGoogleDrive(service, file_id, file_name):
+def download_from_google_drive(service, file_id, file_name):
     try:
         request = service.files().get_media(fileId=file_id)
         fh = io.FileIO(file_name, 'wb') 
@@ -51,5 +51,5 @@ def downloadFromGoogleDrive(service, file_id, file_name):
     except HttpError as error:
         print(f'An error occurred: {error}')
 
-service = getService()
-downloadFromGoogleDrive(service, getIdByName(service,'res.csv'), 'res.csv')
+service = get_service()
+download_from_google_drive(service, get_ID_by_name(service,'res.csv'), 'res.csv')
